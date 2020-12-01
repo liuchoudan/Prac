@@ -21,14 +21,12 @@
 import os
 import configparser
 
-from django.conf import settings
-
 parser = configparser.ConfigParser()
-parser.read(os.path.join(settings.BASE_DIR, 'settings.py'))
+parser.read(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'settings.ini'))
+print()
 
 
-class BaseSettings:
-
+class BaseSettings(object):
     section = None
 
     def __getattr__(self, item):
@@ -50,9 +48,32 @@ class BaseSettings:
         """
         if cls.section is None:
             raise AttributeError("Attribute 'section' requires a string value.")
-        for attr, _type in cls.__annotations__:
+        for attr, _type in cls.__annotations__.items():
+            if _type not in [str, int, bool, float]:
+                raise AttributeError(f'Type {_type} of attribute {attr} is not supported by settings.')
+        return super().__new__(cls)
 
+
+class Default(BaseSettings):
+    section = 'Default'
+    debug: bool
+
+
+class MySQL(BaseSettings):
+    section = 'MySQL'
+    name: str
+    host: str
+    port: str
+    user: str
+    password: str
+
+
+class Settings:
+    default = Default()
+    mysql = MySQL()
+
+
+settings = Settings()
 
 if __name__ == '__main__':
     print(settings.DEBUG)
-

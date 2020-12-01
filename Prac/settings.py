@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -23,10 +22,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '!j-lz^pj0tr2xkm-rplce=v(zq!m@cf1=6hu_@=ywga=5l9=2c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+from common.config import settings
+
+DEBUG = settings.default.debug
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -70,7 +70,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Prac.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
@@ -84,14 +83,13 @@ WSGI_APPLICATION = 'Prac.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'django',
-        'USER': 'liuxin',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'PASSWORD': 'password'
+        'NAME': settings.mysql.name,
+        'USER': settings.mysql.user,
+        'HOST': settings.mysql.host,
+        'PORT': settings.mysql.port,
+        'PASSWORD': settings.mysql.password
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -111,7 +109,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -124,7 +121,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
