@@ -28,6 +28,9 @@ class Hobby(models.Model):
     class Meta:
         db_table = 'hobby'
 
+    def __str__(self):
+        return f'id: {self.pk}, name: {self.name}'
+
 
 class Student(models.Model):
     """
@@ -38,7 +41,15 @@ class Student(models.Model):
     hobbies = models.ManyToManyField(Hobby)
 
     def __str__(self):
-        return self.name
+        return f'id: {self.pk}, name: {self.name}'
 
     class Meta:
         db_table = 'student'
+
+
+class Company(models.Model):
+    """
+    公司模型
+    """
+    employees = models.IntegerField()
+    chairs = models.IntegerField()
