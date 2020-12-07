@@ -53,3 +53,62 @@ class Company(models.Model):
     """
     employees = models.IntegerField()
     chairs = models.IntegerField()
+
+
+class Author(models.Model):
+    """
+    作者模型
+    """
+    name = models.CharField(verbose_name='作者', max_length=80)
+    age = models.PositiveSmallIntegerField()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        db_table = 'author'
+        ordering = ('name',)
+
+
+class Publisher(models.Model):
+    """
+    出版商模型
+    """
+    name = models.CharField(verbose_name='发布者', max_length=80)
+
+    class Meta:
+        db_table = 'publisher'
+        ordering = ('name',)
+
+
+class Book(models.Model):
+    """
+    书籍模型
+    """
+    name = models.CharField(verbose_name='书籍名称', max_length=300)
+    pages = models.IntegerField(verbose_name='书籍页数')
+    price = models.DecimalField(verbose_name='书籍价格', max_digits=10, decimal_places=2)
+    rating = models.FloatField(verbose_name='书籍评分')
+    authors = models.ManyToManyField(Author)
+    publishers = models.ForeignKey(Publisher, on_delete=models.CASCADE)
+    pubdate = models.DateField(verbose_name='发布日期')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        db_table = 'book'
+        ordering = ('name',)
+
+
+class Store(models.Model):
+    """
+    书店模型
+    """
+    name = models.CharField(verbose_name='书店名', max_length=100)
+    books = models.ManyToManyField(Book)
+
+    class Meta:
+        db_table = 'store'
+        ordering = ('name',)
+
